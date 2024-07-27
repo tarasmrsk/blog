@@ -14,6 +14,7 @@ function Footer() {
   console.log(`Общее количество статей: ${totalArticles}`)
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
     dispatch(fetchArticles(currentPage))
   }, [currentPage, dispatch])
 
