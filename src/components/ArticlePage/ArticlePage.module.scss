@@ -1,0 +1,113 @@
+p{
+    margin: 0;
+}
+
+.body{
+    font-size: 20px;
+    line-height: 28px;
+    padding-top: 25px;
+}
+
+.article{
+    position: relative;
+    width: 938px;
+    min-height: 140px;
+    background-color: white;
+    margin-top: 26px;
+    margin-bottom: 100px;
+    border-radius: 0px 5px 5px 0px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    padding: 16px;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+}
+
+.article_info{
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+}
+
+.header_title{
+    display: flex;
+    align-items: center;
+}
+
+.title{
+    font-size: 20px;
+    line-height: 28px;
+    color:  #1890FF;
+    margin: 0;
+    margin-right: 8px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.like{
+    font-size: 24px;
+    margin-right: 5px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.like:hover {
+    color: red;
+}
+
+.likeCounter{
+    font-size: 16px;
+    line-height: 22px;
+}
+
+.tag {
+    display: inline-block;
+    height: 20px;
+    border: 1px solid black;
+    border-radius: 2px;
+    font-size: 12px;
+    line-height: 14.52px;
+    padding: 0 5px;
+    line-height: 20px;
+    margin-right: 5px;
+  }
+
+.text{
+    font-size: 12px;
+    line-height: 22px;
+    margin-top: 5px;
+    color: #00000080;
+}
+
+.post_info {
+    flex: 0 0 15%;
+    display: flex; 
+    justify-content: space-between;
+}
+
+.AuthorDetails{
+    display: flex;
+    align-items: center;
+}
+
+.author_info{
+    width: auto;
+    margin-right: 10px;
+}
+
+.name{
+    font-size: 18px;
+    line-height: 28px;
+}
+
+.date{
+    font-size: 12px;
+    line-height: 22px;
+    color: #00000080
+}
+
+.avatar {
+    width: 46px;
+    height: 46px; 
+    border-radius: 50%; 
+}
