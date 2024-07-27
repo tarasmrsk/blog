@@ -3,6 +3,7 @@ const initialState = {
   loading: false,
   error: null,
   total: 0, 
+  currentPage: 1,
 }
 
 // eslint-disable-next-line import/prefer-default-export, default-param-last
@@ -32,6 +33,11 @@ export const articlesReducer = (state = initialState, action) => {
       ...state,
       currentSlug: action.payload.slug,
     }
+  case 'SET_CURRENT_PAGE':
+    return {
+      ...state,
+      currentPage: action.payload.page,
+    }
   default:
     return state
   }
@@ -50,6 +56,11 @@ const fetchArticlesSuccess = (articles, total) => ({
 const fetchArticlesFailure = (error) => ({
   type: 'FETCH_ARTICLES_FAILURE',
   payload: { error },
+})
+
+export const setCurrentPage = (page) => ({
+  type: 'SET_CURRENT_PAGE',
+  payload: { page },
 })
 
 export const fetchArticles = (page = 1, limit = 5) => async (dispatch) => {
