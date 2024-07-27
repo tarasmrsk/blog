@@ -1,1 +1,1 @@
-# [BLOG](https://aviasales-umber-phi.vercel.app/)#
+# [BLOG](https://blog-sigma-orcin-74.vercel.app/articles)
