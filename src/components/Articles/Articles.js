@@ -14,6 +14,8 @@ function Articles() {
   const articles = useSelector((state) => state.id.articles)
   const loading = useSelector((state) => state.id.loading)
 
+  console.log(loading)
+
   useEffect(() => {
     dispatch(fetchArticles(slug))
   }, [dispatch, slug])

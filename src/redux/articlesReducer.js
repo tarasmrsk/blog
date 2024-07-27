@@ -11,6 +11,7 @@ export const articlesReducer = (state = initialState, action) => {
   case 'FETCH_ARTICLES_REQUEST':
     return {
       ...state,
+      loading: false,
       error: null,
     }
   case 'FETCH_ARTICLES_SUCCESS':
