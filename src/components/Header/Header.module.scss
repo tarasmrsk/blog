@@ -46,9 +46,10 @@
 }
 
 .name{
+    display: flex;
     font-size: 18px;
     line-height: 28px;
-    color: #000000D9;
+    color: black;
 }
 
 .registration {
@@ -70,5 +71,27 @@
   
 .registration:hover {
     background-color: #52C41A;
+    color: white;
+}
+
+.logout{
+    display: flex;
+    align-items: center;
+    height: 51px;
+    font-size: 18px;
+    line-height: 28px;
+    border: 1px solid black;
+    border-radius: 5px;
+    color: black;
+    background-color: white;
+    text-decoration: none;
+    padding-left: 20px;
+    padding-right: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.logout:hover {
+    background-color: black;
     color: white;
 }

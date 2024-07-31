@@ -1,8 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useForm, Controller } from 'react-hook-form'
-import { Button, Input } from 'antd'
+import { Button, Input, message } from 'antd'
 
 import s from './Login.module.scss'
 
@@ -14,9 +14,39 @@ function Login() {
     reset,
   } = useForm()
 
-  const onSubmit = (data) => {
-    console.log(data)
-    reset()
+  const navigate = useNavigate()
+
+  const onSubmit = async (data) => {
+    const userData = {
+      user: {
+        email: data.email,
+        password: data.password,
+      },
+    }
+
+    try {
+      const response = await fetch('https://blog.kata.academy/api/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      })
+
+      if (!response.ok) {
+        throw new Error('Ошибка при входе')
+      }
+
+      const result = await response.json()
+      console.log(result)
+
+      localStorage.setItem('token', result.token)
+      localStorage.setItem('username', result.user.username)
+      navigate('/articles')
+    } catch (error) {
+      message.error(error.message) 
+    }
+    reset() 
   }
 
   return (
@@ -69,7 +99,7 @@ function Login() {
         <p className={s.registration}>
           Don’t have an account? <Link to='/registration' className={s.linkRegistration}>Registration</Link>.
         </p>
-        
+
       </form>
     </section>
   )

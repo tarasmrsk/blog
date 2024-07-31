@@ -14,6 +14,7 @@ function Footer() {
   useEffect(() => {
     dispatch(fetchArticles(currentPage))
     localStorage.setItem('currentPage', currentPage)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [currentPage, dispatch])
 
   const handlePageChange = (page) => {

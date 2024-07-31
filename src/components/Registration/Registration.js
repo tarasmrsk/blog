@@ -1,12 +1,18 @@
+/* eslint-disable no-undef */
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Button, Checkbox, Input } from 'antd'
 import { useForm, Controller } from 'react-hook-form'
 
+import { registerUser } from '../../redux/registrationSlice'
+
 import s from './Registration.module.scss'
 
 function Registration() {
+  const dispatch = useDispatch()
+
   const {
     control,
     handleSubmit,
@@ -17,6 +23,7 @@ function Registration() {
 
   const onSubmit = async (data) => {
     console.log(data)
+    await dispatch(registerUser(data))
     reset()
   }
 
@@ -129,7 +136,7 @@ function Registration() {
         <p className={s.login}>
           Already have an account? <Link to='/login' className={s.linkLogin}>Login</Link>.
         </p>
-        
+
       </form>
     </section>
   )

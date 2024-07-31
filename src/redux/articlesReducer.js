@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 const initialState = {
   articles: [],
   loading: false,
@@ -87,4 +88,3 @@ export const fetchArticles = (page = 1, limit = 5) => async (dispatch) => {
     dispatch(fetchArticlesFailure(error.message))
   }
 }
-
