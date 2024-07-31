@@ -1,0 +1,46 @@
+.profileContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 60px;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    width: 384px;
+    height: 100%;
+    background-color: white; 
+    padding: 32px; 
+    border: 1px solid #D9D9D9;
+    border-radius: 5px; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-sizing: border-box;
+}
+
+.profile{
+    display: flex;
+    justify-content: center;
+    color: #262626;
+    font-size: 20px;
+    line-height: 28px;
+    font-weight:600;
+}
+
+.username, .email, .password, .avatar, .button{
+    font-size: 14px;
+    line-height: 22px;
+    margin-top: 10px;
+}
+
+.button{
+    font-size: 16px;
+    line-height: 24px;
+    margin-top: 20px;
+}
+
+.errorMessage{
+    font-size: 12px;
+    line-height: 20px;
+    color: red;
+}

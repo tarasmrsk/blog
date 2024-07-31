@@ -4,6 +4,9 @@ import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-route
 import Header from '../Header'
 import Articles from '../Articles'
 import ArticlePage from '../ArticlePage'
+import Login from '../Login'
+import Profile from '../Profile'
+import Registration from '../Registration'
 import Footer from '../Footer'
 
 import s from './App.module.scss'
@@ -19,6 +22,9 @@ function MainContent() {
       <Routes>
         <Route path='/articles' exact element={<Articles />} />
         <Route path="/articles/:slug" element={<ArticlePage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/registration" element={<Registration />} />
       </Routes>
       {showFooter && <Footer />}
     </div>

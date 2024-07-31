@@ -17,35 +17,58 @@
     cursor: pointer;
 }
 
-.sing{
+.authentication{
     display: flex;
 }
 
-.sing_in{
-    width: 109px;
+.login{
+    display: flex;
+    align-items: center;
     height: 51px;
     font-size: 18px;
     line-height: 28px;
     background-color: white;
     border: none;
     margin-right: 20px;
+    text-decoration: none;
     cursor: pointer;
 }
 
-.sing_up {
-    width: 109px;
+.profile{
+    display: flex;
+    align-items: center;
+    height: 51px;
+    font-size: 18px;
+    line-height: 28px;
+    margin-right: 20px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.name{
+    font-size: 18px;
+    line-height: 28px;
+    color: #000000D9;
+}
+
+.registration {
+    display: flex;
+    align-items: center;
     height: 51px;
     font-size: 18px;
     line-height: 28px;
     border: 1px solid #52C41A;
     border-radius: 5px;
     color: #52C41A;
-    background-color: transparent;
+    background-color: white;
+    text-decoration: none;
+    padding-left: 20px;
+    padding-right: 20px;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
 }
   
-.sing_up:hover {
+.registration:hover {
     background-color: #52C41A;
     color: white;
 }
