@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react'
 import { useDispatch } from 'react-redux'
@@ -39,13 +38,10 @@ function Registration() {
             control={control}
             rules={{
               required: 'Username обязателен для заполнения',
-              minLength: {
-                value: 3,
-                message: 'Username должен быть не менее 3 символов',
-              },
-              maxLength: {
-                value: 20,
-                message: 'Username должен быть не больше 20 символов',
+              validate: {
+                isLatin: value => /^[a-zA-Z]+$/.test(value) || 'Username должен содержать только латинские буквы',
+                minLength: value => value.length >= 3 || 'Username должен быть не менее 3 символов',
+                maxLength: value => value.length <= 20 || 'Username должен быть не больше 20 символов',
               },
             }}
             render={({ field }) => (
