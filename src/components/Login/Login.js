@@ -1,12 +1,18 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
 import { useForm, Controller } from 'react-hook-form'
-import { Button, Input, message } from 'antd'
+import { Input, Button } from 'antd'
+import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+
+import { loginUser } from '../../redux/loginSlice'
 
 import s from './Login.module.scss'
 
 function Login() {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
   const {
     control,
     formState: { errors },
@@ -14,39 +20,15 @@ function Login() {
     reset,
   } = useForm()
 
-  const navigate = useNavigate()
-
   const onSubmit = async (data) => {
-    const userData = {
-      user: {
-        email: data.email,
-        password: data.password,
-      },
-    }
-
     try {
-      const response = await fetch('https://blog.kata.academy/api/users/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-      })
-
-      if (!response.ok) {
-        throw new Error('Ошибка при входе')
-      }
-
-      const result = await response.json()
-      console.log(result)
-
-      localStorage.setItem('token', result.token)
-      localStorage.setItem('username', result.user.username)
+      await dispatch(loginUser(data)).unwrap()
       navigate('/articles')
     } catch (error) {
-      message.error(error.message) 
+      console.error('Ошибка регистрации:', error)
+    } finally {
+      reset()
     }
-    reset() 
   }
 
   return (

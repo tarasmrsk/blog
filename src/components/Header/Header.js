@@ -5,11 +5,16 @@ import { Link, useNavigate } from 'react-router-dom'
 import s from './Header.module.scss'
 
 function Header() {
-  
-  const username = localStorage.getItem('username')
   const navigate = useNavigate()
+
+  const storedData = localStorage.getItem('login')
+  const parsedData = storedData ? JSON.parse(storedData) : null 
+
+  const username = parsedData ? parsedData.username : null 
+  const image = parsedData ? parsedData.image : null 
+
   const handleLogout = () => {
-    localStorage.removeItem('username')
+    localStorage.removeItem('login')
     navigate('/login')
   }
 
@@ -19,8 +24,12 @@ function Header() {
       <article className={s.authentication}>
         {username ? (
           <div className={s.name}>
+            <button type='button' className={s.create}>
+              Create article
+            </button>
             <Link to="/profile" className={s.profile}>
-              <span className={s.name}>{username}</span>
+              <span className={s.username}>{username}</span>
+              {image && <img src={image} alt="Avatar" className={s.avatar} />}
             </Link>
             <button type='button' onClick={handleLogout} className={s.logout}>
               Exit

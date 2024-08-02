@@ -1,11 +1,18 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react'
-import { Button, Input } from 'antd'
+import React, { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Button, Input, message } from 'antd'
 import { useForm, Controller } from 'react-hook-form'
+import { useDispatch } from 'react-redux'
+
+import { updateProfile } from '../../redux/profileSlice'
 
 import s from './Profile.module.scss'
 
 function Profile() {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
   const {
     control,
     handleSubmit,
@@ -13,9 +20,29 @@ function Profile() {
     reset,
   } = useForm()
 
-  const onSubmit = (data) => {
-    console.log(data)
-    reset()
+  useEffect(() => {
+    const loginData = JSON.parse(localStorage.getItem('login')) || {}
+    const username = loginData.username || ''
+    const email = loginData.email || '' 
+    const avatar = loginData.image || '' 
+
+    reset({
+      username,
+      email,
+      avatar,
+    })
+  }, [reset])
+
+  const onSubmit = async (data) => {
+    try {
+      await dispatch(updateProfile(data)).unwrap()
+      message.success('Данные пользователя успешно обновлены!')
+      navigate('/profile')
+    } catch (error) {
+      message.error(error)
+    } finally {
+      reset()
+    }
   }
 
   return (
@@ -30,13 +57,10 @@ function Profile() {
             control={control}
             rules={{
               required: 'Username обязателен для заполнения',
-              minLength: {
-                value: 3,
-                message: 'Username должен быть не менее 3 символов',
-              },
-              maxLength: {
-                value: 20,
-                message: 'Username должен быть не больше 20 символов',
+              validate: {
+                isLatin: value => /^[a-zA-Z]+$/.test(value) || 'Username должен содержать только латинские буквы',
+                minLength: value => value.length >= 3 || 'Username должен быть не менее 3 символов',
+                maxLength: value => value.length <= 20 || 'Username должен быть не больше 20 символов',
               },
             }}
             render={({ field }) => (

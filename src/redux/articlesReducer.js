@@ -80,8 +80,6 @@ export const fetchArticles = (page = 1, limit = 5) => async (dispatch) => {
     const latestArticles = data.articles
     const totalArticles = data.articlesCount
 
-    // console.log(`Общее количество статей: ${totalArticles}`)
-    
     dispatch(fetchArticlesSuccess(latestArticles, totalArticles))
   } catch (error) {
     console.error('Ошибка:', error)

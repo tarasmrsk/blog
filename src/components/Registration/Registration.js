@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Button, Checkbox, Input } from 'antd'
 import { useForm, Controller } from 'react-hook-form'
 
@@ -11,6 +11,7 @@ import s from './Registration.module.scss'
 
 function Registration() {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const {
     control,
@@ -22,10 +23,16 @@ function Registration() {
 
   const onSubmit = async (data) => {
     console.log(data)
-    await dispatch(registerUser(data))
-    reset()
+    try {
+      await dispatch(registerUser(data)).unwrap()
+      navigate('/login')
+    } catch (error) {
+      console.error('Ошибка регистрации:', error)
+    } finally {
+      reset()
+    }
   }
-
+  
   return (
     <section className={s.RegistrationContainer}>
       <form className={s.form} onSubmit={handleSubmit(onSubmit)}>

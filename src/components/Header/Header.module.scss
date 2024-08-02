@@ -34,24 +34,6 @@
     cursor: pointer;
 }
 
-.profile{
-    display: flex;
-    align-items: center;
-    height: 51px;
-    font-size: 18px;
-    line-height: 28px;
-    margin-right: 20px;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.name{
-    display: flex;
-    font-size: 18px;
-    line-height: 28px;
-    color: black;
-}
-
 .registration {
     display: flex;
     align-items: center;
@@ -70,6 +52,56 @@
 }
   
 .registration:hover {
+    background-color: #52C41A;
+    color: white;
+}
+
+.profile{
+    display: flex;
+    align-items: center;
+    height: 51px;
+    font-size: 18px;
+    line-height: 28px;
+    text-decoration: none;
+    margin-left: 20px;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.name{
+    display: flex;
+    align-items: center;
+}
+
+.username{
+    font-size: 18px;
+    line-height: 28px;
+    color: black;
+}
+
+.avatar{
+    width: 46px;
+    height: 46px; 
+    border-radius: 50%; 
+    margin-left: 20px;
+}
+
+.create{
+    height: 31px;
+    font-size: 18px;
+    line-height: 28px;
+    border: 1px solid #52C41A;
+    border-radius: 5px;
+    color: #52C41A;
+    background-color: white;
+    text-decoration: none;
+    padding-left: 10px;
+    padding-right: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.create:hover {
     background-color: #52C41A;
     color: white;
 }

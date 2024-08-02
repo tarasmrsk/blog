@@ -2,7 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom'
 
 import Header from '../Header'
-import Articles from '../Articles'
+import ArticleList from '../ArticleList'
 import ArticlePage from '../ArticlePage'
 import Login from '../Login'
 import Profile from '../Profile'
@@ -20,7 +20,7 @@ function MainContent() {
     <div className={s.container}>
       <Header />
       <Routes>
-        <Route path='/articles' exact element={<Articles />} />
+        <Route path='/articles' exact element={<ArticleList />} />
         <Route path="/articles/:slug" element={<ArticlePage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
