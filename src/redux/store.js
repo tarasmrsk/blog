@@ -2,11 +2,11 @@ import { createStore, combineReducers, compose, applyMiddleware } from 'redux'
 import {thunk} from 'redux-thunk'
 
 import { articlesReducer } from './articlesReducer'
-// import profileReducer from './profileSlice'
+import loginSlice from './loginSlice'
 
 const rootReducer = combineReducers({
   id: articlesReducer,
-  // profile: profileReducer,
+  login: loginSlice,
 })
 
 const store = createStore(rootReducer, compose(
@@ -19,14 +19,3 @@ const store = createStore(rootReducer, compose(
 
 export default store
 
-// import { configureStore } from '@reduxjs/toolkit'
-
-// import profileReducer from './profileSlice' // Путь к вашему слайсу
-
-// const store = configureStore({
-//   reducer: {
-//     profile: profileReducer,
-//   },
-// })
-
-// export default store

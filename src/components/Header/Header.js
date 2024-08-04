@@ -24,9 +24,7 @@ function Header() {
       <article className={s.authentication}>
         {username ? (
           <div className={s.name}>
-            <button type='button' className={s.create}>
-              Create article
-            </button>
+            <Link to="/new-article" className={s.create}>Create article</Link>
             <Link to="/profile" className={s.profile}>
               <span className={s.username}>{username}</span>
               {image && <img src={image} alt="Avatar" className={s.avatar} />}

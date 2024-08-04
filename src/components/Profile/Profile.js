@@ -38,6 +38,7 @@ function Profile() {
       await dispatch(updateProfile(data)).unwrap()
       message.success('Данные пользователя успешно обновлены!')
       navigate('/profile')
+      window.location.reload()
     } catch (error) {
       message.error(error)
     } finally {

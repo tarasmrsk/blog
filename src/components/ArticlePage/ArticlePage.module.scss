@@ -73,10 +73,21 @@ p{
   }
 
 .text{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     font-size: 12px;
     line-height: 22px;
     margin-top: 5px;
     color: #00000080;
+}
+
+.btn{
+    display: flex;
+}
+
+.btnDelete{
+    margin-right: 10px;
 }
 
 .post_info {

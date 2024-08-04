@@ -26,7 +26,7 @@ export const updateProfile = createAsyncThunk(
       })
 
       if (!response.ok) {
-        throw new Error('Ошибка при обновлении данных пользователя')
+        throw new Error('Такой username или email уже занят!')
       }
 
       const result = await response.json()

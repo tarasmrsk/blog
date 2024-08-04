@@ -4,7 +4,7 @@ const initialState = {
   loading: false,
   error: null,
   total: 0, 
-  currentPage: 1,
+  currentPage: Number(localStorage.getItem('currentPage')) || 1,
 }
 
 // eslint-disable-next-line import/prefer-default-export, default-param-last
