@@ -81,6 +81,7 @@ const loginSlice = createSlice({
       state.token = null
       state.isAuthenticated = false
       localStorage.removeItem('login')
+      message.success('Вы вышли из системы')
     },
   },
   extraReducers: (builder) => {

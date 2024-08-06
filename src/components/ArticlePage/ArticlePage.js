@@ -6,6 +6,7 @@ import { Button, message, Modal, Spin } from 'antd'
 import ReactMarkdown from 'react-markdown'
 import { useLocation, useNavigate } from 'react-router-dom'
 
+import Like from '../Like'
 import { fetchArticles } from '../../redux/articlesReducer'
 import { deleteArticle } from '../../redux/articlesSlice'
 
@@ -14,12 +15,19 @@ import s from './ArticlePage.module.scss'
 function ArticlePage({ match }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { article, loading, error } = useSelector((state) => state.id.articles)
   const { slug, ...props } = useLocation().state
+
+  const article = useSelector((state) => 
+    state.id.articles ? state.id.articles.find((a) => a.slug === slug) : null
+  )
 
   useEffect(() => {
     dispatch(fetchArticles(slug))
   }, [dispatch, slug])
+
+  const handleEdit = () => {
+    navigate(`/articles/${slug}/edit`, { state: props })
+  }
 
   const handleDelete = async () => {
     try {
@@ -42,17 +50,11 @@ function ArticlePage({ match }) {
     })
   }
 
-  if (loading) {
-    return <div><Spin /></div>
-  }
-
-  if (error) {
-    return <div>Ошибка: {error}</div>
-  }
-
   const loginData = JSON.parse(localStorage.getItem('login'))
   const username = loginData ? loginData.username : null
   const isAuthor = props.author.username === username
+
+  if (!article) return <Spin />
 
   return (
     <section className={s.article}>
@@ -60,8 +62,9 @@ function ArticlePage({ match }) {
         <div className={s.header}>
           <div className={s.header_title}>
             <span className={s.title}>{props.title}</span>
-            <span className={s.like}>♡</span>
-            <span className={s.likeCounter}>{props.favoritesCount}</span>
+            <Like 
+              article={article} 
+            />
           </div>
           {props.tagList.length > 0 && (
             <div className={s.tags}>
@@ -95,7 +98,7 @@ function ArticlePage({ match }) {
             <Button type="primary" danger ghost className={s.btnDelete} onClick={showDeleteConfirm}>
             Delete
             </Button>
-            <Button type="primary" ghost onClick={() => navigate(`/articles/${slug}/edit`)}>
+            <Button type="primary" ghost onClick={handleEdit}>
             Edit
             </Button>
           </div>

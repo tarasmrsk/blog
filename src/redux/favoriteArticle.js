@@ -18,6 +18,7 @@ export const favoriteArticle = createAsyncThunk(
       }
   
       const data = await response.json()
+      console.log(`Лайк поставлен ${data.article.favorited} статье :${data.article.title}`)
       return data.article 
     } catch (error) {
       return rejectWithValue(error.message)
@@ -42,6 +43,7 @@ export const unfavoriteArticle = createAsyncThunk(
       }
   
       const data = await response.json()
+      console.log(`Лайк снят ${data.article.favorited} статье :${data.article.title}`)
       return data.article
     } catch (error) {
       return rejectWithValue(error.message)
@@ -56,17 +58,25 @@ const articlesSlice = createSlice({
     currentArticle: null,
   },
   reducers: {
+    setArticles(state, action) {
+      state.articles = action.payload.map(article => ({
+        ...article,
+        favorited: article.favorited || false
+      }))
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(favoriteArticle.fulfilled, (state, action) => {
-        if (state.currentArticle && state.currentArticle.slug === action.payload.slug) {
-          state.currentArticle = action.payload
+        const index = state.articles.findIndex(article => article.slug === action.payload.slug)
+        if (index !== -1) {
+          state.articles[index] = action.payload
         }
       })
       .addCase(unfavoriteArticle.fulfilled, (state, action) => {
-        if (state.currentArticle && state.currentArticle.slug === action.payload.slug) {
-          state.currentArticle = action.payload
+        const index = state.articles.findIndex(article => article.slug === action.payload.slug)
+        if (index !== -1) {
+          state.articles[index] = action.payload 
         }
       })
       .addCase(favoriteArticle.rejected, (state, action) => {

@@ -1,4 +1,4 @@
-/* eslint-disable no-param-reassign */
+/* eslint-disable default-param-last */
 const initialState = {
   articles: [],
   loading: false,
@@ -7,7 +7,6 @@ const initialState = {
   currentPage: Number(localStorage.getItem('currentPage')) || 1,
 }
 
-// eslint-disable-next-line import/prefer-default-export, default-param-last
 export const articlesReducer = (state = initialState, action) => {
   switch (action.type) {
   case 'FETCH_ARTICLES_REQUEST':
@@ -70,7 +69,13 @@ export const fetchArticles = (page = 1, limit = 5) => async (dispatch) => {
   const offset = (page - 1) * limit
 
   try {
-    const response = await fetch(`https://blog.kata.academy/api/articles?limit=${limit}&offset=${offset}`)
+    const response = await fetch(`https://blog.kata.academy/api/articles?limit=${limit}&offset=${offset}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Token ${JSON.parse(localStorage.getItem('login'))?.token }`,
+        'Content-Type': 'application/json'
+      }
+    })
 
     if (!response.ok) {
       throw new Error('Не удалось загрузить статьи')

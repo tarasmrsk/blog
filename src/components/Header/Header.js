@@ -1,11 +1,15 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+
+import { logout } from '../../redux/loginSlice'
 
 import s from './Header.module.scss'
 
 function Header() {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const storedData = localStorage.getItem('login')
   const parsedData = storedData ? JSON.parse(storedData) : null 
@@ -14,6 +18,7 @@ function Header() {
   const image = parsedData ? parsedData.image : null 
 
   const handleLogout = () => {
+    dispatch(logout())
     localStorage.removeItem('login')
     navigate('/login')
   }

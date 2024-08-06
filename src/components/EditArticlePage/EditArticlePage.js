@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { useNavigate, useParams, useLocation } from 'react-router-dom'
 import { Button, Input, message } from 'antd'
 import { useForm, Controller } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
@@ -16,6 +16,8 @@ function EditArticlePage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { slug } = useParams()
+  const location = useLocation()
+  const props = location.state
 
   const {
     control,
@@ -26,6 +28,17 @@ function EditArticlePage() {
 
   const [tags, setTags] = useState([]) 
   const [tagInput, setTagInput] = useState('') 
+
+  useEffect(() => {
+    if (props) {
+      reset({
+        title: props.title || '',
+        shortDescription: props.description || '',
+        text: props.body || '',
+      })
+      setTags(props.tagList || [])
+    }
+  }, [props, reset])
 
   const onSubmit = async (data) => {
     const articleData = {
