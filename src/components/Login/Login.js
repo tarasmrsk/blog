@@ -17,7 +17,7 @@ function Login() {
     control,
     formState: { errors },
     handleSubmit,
-    reset,
+    setError,
   } = useForm()
 
   const onSubmit = async (data) => {
@@ -26,9 +26,9 @@ function Login() {
       navigate('/articles')
     } catch (error) {
       console.error('Ошибка регистрации:', error)
-    } finally {
-      reset()
-    }
+      setError('email', { type: 'manual', message: 'Проверьте логин' })
+      setError('password', { type: 'manual', message: 'Проверьте пароль' })
+    } 
   }
 
   return (
@@ -64,7 +64,13 @@ function Login() {
           <Controller
             name="password"
             control={control}
-            rules={{ required: 'Пароль обязателен для заполнения' }}
+            rules={{
+              required: 'Пароль обязателен для заполнения',
+              minLength: {
+                value: 6,
+                message: 'Пароль должен содержать не менее 6 символов',
+              },
+            }}
             render={({ field }) => (
               <Input.Password
                 {...field}

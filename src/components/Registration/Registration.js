@@ -18,7 +18,6 @@ function Registration() {
     handleSubmit,
     formState: { errors },
     getValues,
-    reset,
   } = useForm()
 
   const onSubmit = async (data) => {
@@ -28,8 +27,6 @@ function Registration() {
       navigate('/login')
     } catch (error) {
       console.error('Ошибка регистрации:', error)
-    } finally {
-      reset()
     }
   }
   

@@ -4,11 +4,13 @@ import {thunk} from 'redux-thunk'
 import { articlesReducer } from './articlesReducer'
 import loginSlice from './loginSlice'
 import articlesSlice from './articlesSlice'
+import favoriteArticle from './favoriteArticle'
 
 const rootReducer = combineReducers({
   id: articlesReducer,
   login: loginSlice,
   article: articlesSlice,
+  like: favoriteArticle,
 })
 
 const store = createStore(rootReducer, compose(

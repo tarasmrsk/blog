@@ -28,8 +28,18 @@ function MainContent({ isAuthenticated }) {
         <Route path="/articles/:slug" element={<ArticlePage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/new-article" element={<PrivateRoute element={<NewArticle />} isAuthenticated={isAuthenticated} />} />
-        <Route path="/articles/:slug/edit" element={<PrivateRoute element={<EditArticlePage />} isAuthenticated={isAuthenticated} />} />
+        <Route path="/new-article" element={
+          <PrivateRoute
+            element={<NewArticle />} 
+            isAuthenticated={isAuthenticated} 
+          />
+        }/>
+        <Route path="/articles/:slug/edit" element={
+          <PrivateRoute
+            element={<EditArticlePage />} 
+            isAuthenticated={isAuthenticated} 
+          />
+        }/>
         <Route path="/registration" element={<Registration />} />
       </Routes>
       {showFooter && <Footer />}
@@ -48,3 +58,4 @@ function App() {
 }
 
 export default App
+

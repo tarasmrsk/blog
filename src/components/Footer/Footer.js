@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Pagination } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { fetchArticles, setCurrentPage } from '../../redux/articlesReducer'
+import { setCurrentPage } from '../../redux/articlesReducer'
 
 import s from './Footer.module.scss'
 
@@ -18,14 +18,9 @@ function Footer() {
     }
   }, [dispatch])
 
-  useEffect(() => {
-    dispatch(fetchArticles(currentPage))
-    localStorage.setItem('currentPage', currentPage)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }, [currentPage, dispatch])
-
   const handlePageChange = (page) => {
     dispatch(setCurrentPage(page))
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   return (

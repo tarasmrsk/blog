@@ -11,6 +11,11 @@ export const loginUser = createAsyncThunk(
         password: data.password,
       },
     }
+
+    if (!userData.user.email || !userData.user.password) {
+      message.error('Email и пароль не могут быть пустыми')
+      return rejectWithValue('Email и пароль не могут быть пустыми')
+    }
   
     try {
       const response = await fetch('https://blog.kata.academy/api/users/login', {
@@ -24,11 +29,9 @@ export const loginUser = createAsyncThunk(
       if (!response.ok) {
         throw new Error('Ошибка при входе. Проверьте Email и пароль')
       }
-  
+
       const result = await response.json()
       const { username, email, token, image } = result.user
-
-      console.log(result.user.token)
 
       localStorage.setItem(
         'login',

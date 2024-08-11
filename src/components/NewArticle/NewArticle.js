@@ -38,9 +38,11 @@ function NewArticle() {
     }
   
     try {
-      await dispatch(createArticle(articleData)).unwrap()
+      const response = await dispatch(createArticle(articleData)).unwrap()
+      console.log(response.article.slug)
       message.success('Статья успешно добавлена!')
-      navigate('/articles')
+      navigate(`/articles/${response.article.slug}`)
+      window.location.reload()
     } catch (error) {
       message.error(error)
     } finally {
@@ -49,7 +51,6 @@ function NewArticle() {
       setTagInput('')
     }
   }
-
   const addTag = () => {
     if (tagInput && !tags.includes(tagInput)) {
       setTags([...tags, tagInput])

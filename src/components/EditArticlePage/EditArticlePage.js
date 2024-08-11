@@ -1,10 +1,11 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react'
-import { useNavigate, useParams, useLocation } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Input, message } from 'antd'
 import { useForm, Controller } from 'react-hook-form'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
+import { fetchArticleSlug } from '../../redux/articlesReducer'
 import { updateArticle } from '../../redux/articlesSlice'
 
 import s from './EditArticlePage.module.scss'
@@ -12,12 +13,11 @@ import s from './EditArticlePage.module.scss'
 const { TextArea } = Input
 
 function EditArticlePage() {
-
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { slug } = useParams()
-  const location = useLocation()
-  const props = location.state
+  const loginData = JSON.parse(localStorage.getItem('login'))
+  const currentUser = loginData ? loginData.username : null
 
   const {
     control,
@@ -26,19 +26,30 @@ function EditArticlePage() {
     reset,
   } = useForm()
 
-  const [tags, setTags] = useState([]) 
-  const [tagInput, setTagInput] = useState('') 
+  const [tags, setTags] = useState([])
+  const [tagInput, setTagInput] = useState('')
+  const currentSlug = useSelector((state) => state.id.currentSlug)
 
   useEffect(() => {
-    if (props) {
+    dispatch(fetchArticleSlug(slug))
+  }, [dispatch, slug])
+
+  useEffect(() => {
+    if (currentSlug) {
+      if (currentSlug.author.username !== currentUser) {
+        message.error('У вас нет прав для редактирования этой статьи.')
+        navigate('/articles')
+        return
+      }
+
       reset({
-        title: props.title || '',
-        shortDescription: props.description || '',
-        text: props.body || '',
+        title: currentSlug.title || '', 
+        shortDescription: currentSlug.description || '', 
+        text: currentSlug.body || '', 
       })
-      setTags(props.tagList || [])
+      setTags(currentSlug.tagList || [])
     }
-  }, [props, reset])
+  }, [currentSlug, currentUser, navigate, reset])
 
   const onSubmit = async (data) => {
     const articleData = {
@@ -51,9 +62,9 @@ function EditArticlePage() {
     }
 
     try {
-      await dispatch(updateArticle({ slug, articleData })).unwrap()
+      const response = await dispatch(updateArticle({ slug, articleData })).unwrap()
       message.success('Статья успешно обновлена!')
-      navigate('/articles')
+      navigate(`/articles/${response.article.slug}`) 
     } catch (error) {
       message.error(error)
     } finally {
@@ -66,7 +77,7 @@ function EditArticlePage() {
   const addTag = () => {
     if (tagInput && !tags.includes(tagInput)) {
       setTags([...tags, tagInput])
-      setTagInput('') 
+      setTagInput('')
     }
   }
 

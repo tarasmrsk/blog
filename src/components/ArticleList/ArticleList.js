@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Alert, Spin } from 'antd'
 
@@ -11,23 +11,18 @@ import s from './Articles.module.scss'
 function ArticleList() {
 
   const dispatch = useDispatch()
-  const { slug } = useParams()
+  const currentPage = useSelector((state) => state.id.currentPage)
   const articles = useSelector((state) => state.id.articles)
   const loading = useSelector((state) => state.id.loading)
 
   useEffect(() => {
-    dispatch(fetchArticles(slug))
-  }, [dispatch, slug])
-
-  useEffect(() => {
-  }, [articles])
+    dispatch(fetchArticles(currentPage))
+  }, [dispatch, currentPage])
 
   return (
     <div>
-      {!loading ? (
-        <div className={s.spin}>
-          <Spin tip="Loading" size="large" />
-        </div>
+      {loading ? (
+        <Spin tip="Loading" size="large" className={s.spin}/>
       ) : articles && articles.length > 0 ? (
         articles.map((article, index) => (
           // eslint-disable-next-line react/no-array-index-key

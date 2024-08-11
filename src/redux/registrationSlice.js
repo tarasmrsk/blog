@@ -12,7 +12,7 @@ export const registerUser = createAsyncThunk(
         password: data.password,
       },
     }
-  
+
     try {
       const response = await fetch('https://blog.kata.academy/api/users', {
         method: 'POST',
@@ -21,14 +21,27 @@ export const registerUser = createAsyncThunk(
         },
         body: JSON.stringify(userData),
       })
-  
+
       if (!response.ok) {
-        throw new Error('Такое имя или email уже занято. Выберите другое')
+        const errorData = await response.json()
+
+        if (errorData.errors) {
+
+          if (errorData.errors.username) {
+            throw new Error('Username уже занят. Выберите другой Username')
+          }
+          if (errorData.errors.email) {
+            throw new Error('Email уже уже занят. Выберите другой адрес электронной почты')
+          }
+
+        }
+
+        throw new Error('Произошла ошибка при регистрации. Попробуйте еще раз.')
       }
-  
+
       const result = await response.json()
       message.success('Пользователь успешно зарегистрирован!')
-      return result 
+      return result
     } catch (error) {
       message.error(error.message)
       return rejectWithValue(error.message)
