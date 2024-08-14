@@ -1,10 +1,11 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable default-param-last */
 const initialState = {
   articles: [],
   loading: false,
   error: null,
   total: 0, 
-  currentPage: 1,
+  currentPage: Number(localStorage.getItem('currentPage')) || 1,
   currentSlug: null,
 }
 

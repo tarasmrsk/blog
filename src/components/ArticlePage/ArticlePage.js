@@ -9,15 +9,16 @@ import { useNavigate, useParams } from 'react-router-dom'
 import Like from '../Like'
 import { fetchArticleSlug } from '../../redux/articlesReducer'
 import { deleteArticle } from '../../redux/articlesSlice'
+import { selectLoading, selectCurrentSlug } from '../../redux/articlesSelectors'
 
 import s from './ArticlePage.module.scss'
 
 function ArticlePage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const loading = useSelector(selectLoading)
+  const currentSlug = useSelector(selectCurrentSlug)
   const { slug } = useParams()
-  const loading = useSelector((state) => state.id.loading)
-  const currentSlug = useSelector((state) => state.id.currentSlug)
 
   useEffect(() => {
     dispatch(fetchArticleSlug(slug))

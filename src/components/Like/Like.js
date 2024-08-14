@@ -7,12 +7,13 @@ import { message } from 'antd'
 import HeartBlack from '../../img/HeartBlack.png'
 import HeartRed from '../../img/HeartRed.png'
 import { favoriteArticle, unfavoriteArticle } from '../../redux/favoriteArticle'
+import { selectIsAuthenticated } from '../../redux/articlesSelectors'
 
 function Like({ article }) {
   const dispatch = useDispatch()
+  const isAuthenticated = useSelector(selectIsAuthenticated)
   const [isLiked, setIsLiked] = useState(article.favorited)
   const [likeCount, setLikeCount] = useState(article.favoritesCount)
-  const isAuthenticated = useSelector((state) => state.login.isAuthenticated)
 
   useEffect(() => {
     setIsLiked(article.favorited)

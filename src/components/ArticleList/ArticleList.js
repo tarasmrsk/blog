@@ -5,15 +5,16 @@ import { Alert, Spin } from 'antd'
 
 import Like from '../Like'
 import { fetchArticles } from '../../redux/articlesReducer'
+import { selectCurrentPage, selectArticles, selectLoading } from '../../redux/articlesSelectors'
 
 import s from './Articles.module.scss'
 
 function ArticleList() {
 
   const dispatch = useDispatch()
-  const currentPage = useSelector((state) => state.id.currentPage)
-  const articles = useSelector((state) => state.id.articles)
-  const loading = useSelector((state) => state.id.loading)
+  const currentPage = useSelector(selectCurrentPage)
+  const articles = useSelector(selectArticles)
+  const loading = useSelector(selectLoading)
 
   useEffect(() => {
     dispatch(fetchArticles(currentPage))
@@ -66,7 +67,7 @@ function ArticleList() {
           </section>
         ))
       ) : (
-        <Alert message="Нет статей для отображения." type="info" />
+        loading && <Alert message="Нет статей для отображения." type="info" />
       )}
     </div>
   )

@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { Button, Checkbox, Input } from 'antd'
@@ -12,6 +12,7 @@ import s from './Registration.module.scss'
 function Registration() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
 
   const {
     control,
@@ -21,12 +22,14 @@ function Registration() {
   } = useForm()
 
   const onSubmit = async (data) => {
-    console.log(data)
+    setLoading(true)
     try {
       await dispatch(registerUser(data)).unwrap()
       navigate('/login')
     } catch (error) {
       console.error('Ошибка регистрации:', error)
+    } finally {
+      setLoading(false)
     }
   }
   
@@ -131,7 +134,7 @@ function Registration() {
           {errors.agreeToTerms && <span className={s.errorMessage}>{errors.agreeToTerms.message}</span>}
         </label>
 
-        <Button type="primary" htmlType="submit" className={s.button}>Create</Button>
+        <Button type="primary" htmlType="submit" className={s.button} loading={loading} disabled={loading}>Create</Button>
 
         <p className={s.login}>
           Already have an account? <Link to='/login' className={s.linkLogin}>Login</Link>.

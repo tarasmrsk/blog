@@ -1,23 +1,27 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { Button, Input, message } from 'antd'
+import { Spin, Button, Input, message } from 'antd'
 import { useForm, Controller } from 'react-hook-form'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
-import { fetchArticleSlug } from '../../redux/articlesReducer'
 import { updateArticle } from '../../redux/articlesSlice'
+import useArticleAccess from '../useArticleAccess'
 
 import s from './EditArticlePage.module.scss'
 
 const { TextArea } = Input
 
 function EditArticlePage() {
-  const navigate = useNavigate()
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const [disable, setDisable] = useState(false)
   const { slug } = useParams()
   const loginData = JSON.parse(localStorage.getItem('login'))
   const currentUser = loginData ? loginData.username : null
+  
+  const [tags, setTags] = useState([])
+  const [tagInput, setTagInput] = useState('')
 
   const {
     control,
@@ -26,30 +30,26 @@ function EditArticlePage() {
     reset,
   } = useForm()
 
-  const [tags, setTags] = useState([])
-  const [tagInput, setTagInput] = useState('')
-  const currentSlug = useSelector((state) => state.id.currentSlug)
-
-  useEffect(() => {
-    dispatch(fetchArticleSlug(slug))
-  }, [dispatch, slug])
+  const { loading, hasAccess, currentSlug } = useArticleAccess(slug, currentUser)
 
   useEffect(() => {
     if (currentSlug) {
-      if (currentSlug.author.username !== currentUser) {
-        message.error('У вас нет прав для редактирования этой статьи.')
-        navigate('/articles')
-        return
-      }
-
       reset({
-        title: currentSlug.title || '', 
-        shortDescription: currentSlug.description || '', 
-        text: currentSlug.body || '', 
+        title: currentSlug.title || '',
+        shortDescription: currentSlug.description || '',
+        text: currentSlug.body || '',
       })
       setTags(currentSlug.tagList || [])
     }
-  }, [currentSlug, currentUser, navigate, reset])
+  }, [currentSlug, reset])
+
+  if (loading) {
+    return <Spin className={s.spin} />
+  }
+
+  if (!hasAccess) {
+    return null
+  }
 
   const onSubmit = async (data) => {
     const articleData = {
@@ -60,7 +60,7 @@ function EditArticlePage() {
         tagList: tags,
       },
     }
-
+    setDisable(true)
     try {
       const response = await dispatch(updateArticle({ slug, articleData })).unwrap()
       message.success('Статья успешно обновлена!')
@@ -71,6 +71,7 @@ function EditArticlePage() {
       reset()
       setTags([])
       setTagInput('')
+      setDisable(false)
     }
   }
 
@@ -165,7 +166,7 @@ function EditArticlePage() {
           </div>
         </label>
 
-        <Button type="primary" htmlType="submit" className={s.button}>Send</Button>
+        <Button type="primary" htmlType="submit" className={s.button} loading={disable} disabled={disable}>Send</Button>
 
       </form>
     </section>

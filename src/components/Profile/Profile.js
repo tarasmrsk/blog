@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, Input, message } from 'antd'
 import { useForm, Controller } from 'react-hook-form'
@@ -10,8 +10,9 @@ import { updateProfile } from '../../redux/profileSlice'
 import s from './Profile.module.scss'
 
 function Profile() {
-  const navigate = useNavigate()
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
 
   const {
     control,
@@ -34,6 +35,7 @@ function Profile() {
   }, [reset])
 
   const onSubmit = async (data) => {
+    setLoading(true)
     try {
       await dispatch(updateProfile(data)).unwrap()
       message.success('Данные пользователя успешно обновлены!')
@@ -42,6 +44,7 @@ function Profile() {
     } catch (error) {
       message.error(error)
     } finally {
+      setLoading(false)
       reset()
     }
   }
@@ -139,7 +142,7 @@ function Profile() {
           {errors.avatar && <span className={s.errorMessage}>{errors.avatar.message}</span>}
         </label>
 
-        <Button type="primary" htmlType="submit" className={s.button}>Save</Button>
+        <Button type="primary" htmlType="submit" className={s.button} loading={loading} disabled={loading}>Save</Button>
 
       </form>
     </section>

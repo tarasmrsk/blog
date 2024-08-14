@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { Input, Button } from 'antd'
 import { Link, useNavigate } from 'react-router-dom'
@@ -12,6 +12,7 @@ import s from './Login.module.scss'
 function Login() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
 
   const {
     control,
@@ -21,6 +22,7 @@ function Login() {
   } = useForm()
 
   const onSubmit = async (data) => {
+    setLoading(true)
     try {
       await dispatch(loginUser(data)).unwrap()
       navigate('/articles')
@@ -28,7 +30,9 @@ function Login() {
       console.error('Ошибка регистрации:', error)
       setError('email', { type: 'manual', message: 'Проверьте логин' })
       setError('password', { type: 'manual', message: 'Проверьте пароль' })
-    } 
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -82,7 +86,7 @@ function Login() {
           {errors.password && <span className={s.errorMessage}>{errors.password.message}</span>}
         </label>
 
-        <Button type="primary" htmlType="submit" className={s.button}>Login</Button>
+        <Button type="primary" htmlType="submit" className={s.button} loading={loading} disabled={loading}>Login</Button>
 
         <p className={s.registration}>
           Don’t have an account? <Link to='/registration' className={s.linkRegistration}>Registration</Link>.

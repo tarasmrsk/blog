@@ -14,8 +14,9 @@ const { TextArea } = Input
 
 function NewArticle() {
 
-  const navigate = useNavigate()
   const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
 
   const {
     control,
@@ -38,17 +39,18 @@ function NewArticle() {
     }
   
     try {
+      setLoading(true)
       const response = await dispatch(createArticle(articleData)).unwrap()
       console.log(response.article.slug)
       message.success('Статья успешно добавлена!')
       navigate(`/articles/${response.article.slug}`)
-      window.location.reload()
     } catch (error) {
       message.error(error)
     } finally {
       reset()
       setTags([])
       setTagInput('')
+      setLoading(false)
     }
   }
   const addTag = () => {
@@ -142,7 +144,7 @@ function NewArticle() {
           </div>
         </label>
 
-        <Button type="primary" htmlType="submit" className={s.button}>Send</Button>
+        <Button type="primary" htmlType="submit" className={s.button} loading={loading} disabled={loading}>Send</Button>
 
       </form>
     </section>
