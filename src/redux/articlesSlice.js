@@ -12,7 +12,7 @@ const initialState = {
 
 export const fetchArticles = createAsyncThunk(
   'articles/fetchArticles',
-  async ({ page = Number(localStorage.getItem('currentPage')), limit = 5 }, { rejectWithValue }) => {
+  async ({ page = Number(localStorage.getItem('currentPage')) || 1, limit = 5 }, { rejectWithValue }) => {
     const offset = (page - 1) * limit
     try {
       const response = await fetch(`https://blog.kata.academy/api/articles?limit=${limit}&offset=${offset}`, {
