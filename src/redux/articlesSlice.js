@@ -1,131 +1,106 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
-export const createArticle = createAsyncThunk(
-  'articles/createArticle',
-  async (articleData, { rejectWithValue }) => {
+const initialState = {
+  articles: [],
+  loading: false,
+  error: null,
+  total: 0,
+  currentPage: Number(localStorage.getItem('currentPage')) || 1,
+  currentSlug: null,
+}
 
+export const fetchArticles = createAsyncThunk(
+  'articles/fetchArticles',
+  async ({ page = Number(localStorage.getItem('currentPage')), limit = 5 }, { rejectWithValue }) => {
+    const offset = (page - 1) * limit
     try {
-      const response = await fetch('https://blog.kata.academy/api/articles', {
-        method: 'POST',
+      const response = await fetch(`https://blog.kata.academy/api/articles?limit=${limit}&offset=${offset}`, {
+        method: 'GET',
         headers: {
           'Authorization': `Token ${JSON.parse(localStorage.getItem('login'))?.token }`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(articleData),
       })
 
       if (!response.ok) {
-        throw new Error('Ошибка при создании статьи')
+        throw new Error('Не удалось загрузить статьи')
       }
 
-      const result = await response.json()
-      return result
+      const data = await response.json()
+      return { articles: data.articles, total: data.articlesCount }
     } catch (error) {
-      return rejectWithValue(error.message || 'Произошла ошибка при добавлении статьи')
+      return rejectWithValue(error.message)
     }
   }
 )
 
-export const updateArticle = createAsyncThunk(
-  'articles/updateArticle',
-  async ({ slug, articleData }, { rejectWithValue }) => {
-
-    try {
-      const response = await fetch(`https://blog.kata.academy/api/articles/${slug}`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Token ${JSON.parse(localStorage.getItem('login'))?.token }`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(articleData),
-      })
-    
-      if (!response.ok) {
-        throw new Error('Ошибка при обновлении статьи')
-      }
-    
-      const result = await response.json()
-      return result
-    } catch (error) {
-      return rejectWithValue(error.message || 'Произошла ошибка при обновлении статьи')
-    }
-  }
-)
-
-export const deleteArticle = createAsyncThunk(
-  'articles/deleteArticle',
+export const fetchArticleSlug = createAsyncThunk(
+  'articles/fetchArticleSlug',
   async (slug, { rejectWithValue }) => {
-
     try {
       const response = await fetch(`https://blog.kata.academy/api/articles/${slug}`, {
-        method: 'DELETE',
+        method: 'GET',
         headers: {
           'Authorization': `Token ${JSON.parse(localStorage.getItem('login'))?.token }`,
+          'Content-Type': 'application/json',
         },
       })
-  
+
       if (!response.ok) {
-        throw new Error('Ошибка при удалении статьи')
+        throw new Error('Не удалось загрузить статью')
       }
-  
-      return slug
+
+      const data = await response.json()
+      return data.article
     } catch (error) {
-      return rejectWithValue(error.message || 'Произошла ошибка при удалении статьи')
+      return rejectWithValue(error.message)
     }
   }
 )
 
 const articlesSlice = createSlice({
   name: 'articles',
-  initialState: {
-    articles: [],
-    loading: false,
-    error: null,
+  initialState,
+  reducers: {
+    setCurrentPage(state, action) {
+      state.currentPage = action.payload
+      localStorage.setItem('currentPage', action.payload)
+    },
+    setCurrentSlug(state, action) {
+      state.currentSlug = action.payload.slug
+    },
   },
-  reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(createArticle.pending, (state) => {
+      .addCase(fetchArticles.pending, (state) => {
         state.loading = true
         state.error = null
       })
-      .addCase(createArticle.fulfilled, (state, action) => {
+      .addCase(fetchArticles.fulfilled, (state, action) => {
         state.loading = false
-        state.articles.push(action.payload)
+        state.articles = action.payload.articles
+        state.total = action.payload.total
       })
-      .addCase(createArticle.rejected, (state, action) => {
+      .addCase(fetchArticles.rejected, (state, action) => {
         state.loading = false
         state.error = action.payload
       })
-      .addCase(updateArticle.pending, (state) => {
+      .addCase(fetchArticleSlug.pending, (state) => {
         state.loading = true
         state.error = null
       })
-      .addCase(updateArticle.fulfilled, (state, action) => {
+      .addCase(fetchArticleSlug.fulfilled, (state, action) => {
         state.loading = false
-        const index = state.articles.findIndex(article => article.slug === action.payload.article.slug)
-        if (index !== -1) {
-          state.articles[index] = action.payload.article 
-        }
+        state.currentSlug = action.payload
       })
-      .addCase(updateArticle.rejected, (state, action) => {
-        state.loading = false
-        state.error = action.payload
-      })
-      .addCase(deleteArticle.pending, (state) => {
-        state.loading = true
-        state.error = null
-      })
-      .addCase(deleteArticle.fulfilled, (state, action) => {
-        state.loading = false
-        state.articles = state.articles.filter(article => article.slug !== action.payload)
-      })
-      .addCase(deleteArticle.rejected, (state, action) => {
+      .addCase(fetchArticleSlug.rejected, (state, action) => {
         state.loading = false
         state.error = action.payload
       })
   },
 })
+
+export const { setCurrentPage, setCurrentSlug } = articlesSlice.actions
 
 export default articlesSlice.reducer

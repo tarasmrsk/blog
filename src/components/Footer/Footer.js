@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Pagination } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { setCurrentPage } from '../../redux/articlesReducer'
+import { setCurrentPage, fetchArticles } from '../../redux/articlesSlice'
 import { selectCurrentPage, selectTotalArticles } from '../../redux/articlesSelectors'
 
 import s from './Footer.module.scss'
@@ -13,15 +13,17 @@ function Footer() {
   const totalArticles = useSelector(selectTotalArticles)
 
   useEffect(() => {
-    const savedPage = localStorage.getItem('currentPage')
-    if (savedPage) {
-      dispatch(setCurrentPage(Number(savedPage)))
-    }
+    const savedPage = Number(localStorage.getItem('currentPage')) || 1
+    dispatch(setCurrentPage(savedPage))
   }, [dispatch])
+
+  useEffect(() => {
+    dispatch(fetchArticles({ page: currentPage }))
+    localStorage.setItem('currentPage', currentPage)
+  }, [currentPage, dispatch])
 
   const handlePageChange = (page) => {
     dispatch(setCurrentPage(page))
-    localStorage.setItem('currentPage', page)
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 

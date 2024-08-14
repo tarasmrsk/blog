@@ -6,7 +6,7 @@ import { Button, Input, message } from 'antd'
 import { useForm, Controller } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 
-import { createArticle } from '../../redux/articlesSlice'
+import { createArticle } from '../../redux/actionSlice'
 
 import s from './NewArticle.module.scss'
 
@@ -41,7 +41,6 @@ function NewArticle() {
     try {
       setLoading(true)
       const response = await dispatch(createArticle(articleData)).unwrap()
-      console.log(response.article.slug)
       message.success('Статья успешно добавлена!')
       navigate(`/articles/${response.article.slug}`)
     } catch (error) {

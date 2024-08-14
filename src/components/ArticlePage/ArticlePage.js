@@ -7,8 +7,8 @@ import ReactMarkdown from 'react-markdown'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import Like from '../Like'
-import { fetchArticleSlug } from '../../redux/articlesReducer'
-import { deleteArticle } from '../../redux/articlesSlice'
+import { fetchArticleSlug } from '../../redux/articlesSlice'
+import { deleteArticle } from '../../redux/actionSlice'
 import { selectLoading, selectCurrentSlug } from '../../redux/articlesSelectors'
 
 import s from './ArticlePage.module.scss'

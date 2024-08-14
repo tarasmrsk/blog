@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Alert, Spin } from 'antd'
 
 import Like from '../Like'
-import { fetchArticles } from '../../redux/articlesReducer'
+import { fetchArticles } from '../../redux/articlesSlice'
 import { selectCurrentPage, selectArticles, selectLoading } from '../../redux/articlesSelectors'
 
 import s from './Articles.module.scss'

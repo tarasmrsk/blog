@@ -1,15 +1,13 @@
 import { createStore, combineReducers, compose, applyMiddleware } from 'redux'
 import {thunk} from 'redux-thunk'
 
-import { articlesReducer } from './articlesReducer'
-import loginSlice from './loginSlice'
 import articlesSlice from './articlesSlice'
+import loginSlice from './loginSlice'
 import favoriteArticle from './favoriteArticle'
 
 const rootReducer = combineReducers({
-  id: articlesReducer,
+  id: articlesSlice,
   login: loginSlice,
-  article: articlesSlice,
   like: favoriteArticle,
 })
 

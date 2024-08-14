@@ -5,7 +5,7 @@ import { Spin, Button, Input, message } from 'antd'
 import { useForm, Controller } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 
-import { updateArticle } from '../../redux/articlesSlice'
+import { updateArticle } from '../../redux/actionSlice'
 import useArticleAccess from '../useArticleAccess'
 
 import s from './EditArticlePage.module.scss'

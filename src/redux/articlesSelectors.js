@@ -5,3 +5,4 @@ export const selectArticles = (state) => state.id.articles
 export const selectTotalArticles = (state) => state.id.total
 
 export const selectIsAuthenticated = (state) => state.login.isAuthenticated
+

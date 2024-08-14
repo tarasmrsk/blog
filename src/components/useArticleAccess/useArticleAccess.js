@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { message } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { fetchArticleSlug } from '../../redux/articlesReducer'
+import { fetchArticleSlug } from '../../redux/articlesSlice'
 import { selectCurrentSlug } from '../../redux/articlesSelectors'
 
 const useArticleAccess = (slug, currentUser) => {
