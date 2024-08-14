@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Pagination } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { setCurrentPage, fetchArticles } from '../../redux/articlesSlice'
+import { setCurrentPage } from '../../redux/articlesSlice'
 import { selectCurrentPage, selectTotalArticles } from '../../redux/articlesSelectors'
 
 import s from './Footer.module.scss'
@@ -18,7 +18,6 @@ function Footer() {
   }, [dispatch])
 
   useEffect(() => {
-    dispatch(fetchArticles({ page: currentPage }))
     localStorage.setItem('currentPage', currentPage)
   }, [currentPage, dispatch])
 
