@@ -18,7 +18,6 @@ export const favoriteArticle = createAsyncThunk(
       }
   
       const data = await response.json()
-      console.log(`Лайк поставлен ${data.article.favorited} статье :${data.article.title}`)
       return data.article 
     } catch (error) {
       return rejectWithValue(error.message)
@@ -43,7 +42,6 @@ export const unfavoriteArticle = createAsyncThunk(
       }
   
       const data = await response.json()
-      console.log(`Лайк снят ${data.article.favorited} статье :${data.article.title}`)
       return data.article
     } catch (error) {
       return rejectWithValue(error.message)
